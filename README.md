@@ -34,10 +34,10 @@ type alias Cause =
 encode : Cause -> E.Value
 encode cause =
   E.object
-  	[ ("name", E.string cause.name)
-  	, ("percent", E.float cause.percent)
-  	, ("per100k", E.float cause.per100k)
-  	]
+    [ ("name", E.string cause.name)
+    , ("percent", E.float cause.percent)
+    , ("per100k", E.float cause.per100k)
+    ]
 
 
 -- DECODER
@@ -45,9 +45,9 @@ encode cause =
 decoder : D.Decoder Cause
 decoder =
   D.map3 Cause
-  	(D.field "name" D.string)
-  	(D.field "percent" D.float)
-  	(D.field "per100k" D.float)
+    (D.field "name" D.string)
+    (D.field "percent" D.float)
+    (D.field "per100k" D.float)
 ```
 
 Now in some other code we can use `Cause.encode` and `Cause.decoder` as building blocks. So if we want to decode a list of causes, saying `Decode.list Cause.decoder` will handle it!
