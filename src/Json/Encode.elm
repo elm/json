@@ -21,12 +21,10 @@ module Json.Encode exposing
 @docs object, dict, keyValuePairs
 -}
 
+
 import Array exposing (Array)
-import Basics exposing (Bool, Int, Float)
 import Dict exposing (Dict)
-import List
 import Set exposing (Set)
-import String exposing (String)
 import Elm.Kernel.Json
 
 
