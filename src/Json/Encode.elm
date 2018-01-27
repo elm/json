@@ -3,7 +3,7 @@ module Json.Encode exposing
   , encode
   , string, int, float, bool, null
   , list, array, set
-  , object, dict, keyValuePairs
+  , object, dict
   )
 
 {-| Library for turning Elm values into Json values.
@@ -18,7 +18,7 @@ module Json.Encode exposing
 @docs list, array, set
 
 # Objects
-@docs object, dict, keyValuePairs
+@docs object, dict
 -}
 
 
@@ -197,8 +197,12 @@ set func entries =
 -}
 object : List (String, Value) -> Value
 object pairs =
-    Elm.Kernel.Json.wrap
-        (List.foldl Elm.Kernel.Json.addField (Elm.Kernel.Json.emptyObject ()) pairs)
+    Elm.Kernel.Json.wrap (
+        List.foldl
+            (\(k,v) obj -> Elm.Kernel.Json.addField k v obj)
+            (Elm.Kernel.Json.emptyObject ())
+            pairs
+    )
 
 
 {-| Turn a `Dict` into a JSON object.
@@ -220,26 +224,4 @@ dict toKey toValue dictionary =
             (\key value obj -> Elm.Kernel.Json.addField (toKey key) (toValue value) obj)
             (Elm.Kernel.Json.emptyObject ())
             dictionary
-    )
-
-
-{-| Turn a `List` of `Tuple` into a JSON object.
-
-    import Dict exposing (Dict)
-    import Json.Encode as Encode
-
-    people : List (String, Int)
-    people =
-      [ ("Tom",42), ("Sue", 38) ]
-
-    -- Encode.encode 0 (Encode.keyValuePairs identity Encode.int people)
-    --   == """{"Tom":42,"Sue":38}"""
--}
-keyValuePairs : (k -> String) -> (v -> Value) -> List ( k, v ) -> Value
-keyValuePairs toKey toValue pairs =
-    Elm.Kernel.Json.wrap (
-        List.foldl
-            (\(key,value) obj -> Elm.Kernel.Json.addField (toKey key) (toValue value) obj)
-            (Elm.Kernel.Json.emptyObject ())
-            pairs
     )
