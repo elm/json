@@ -422,7 +422,7 @@ function _Json_addEntry(func)
 {
 	return F2(function(entry, array)
 	{
-		array.push(_Json_unwrap(entry));
+		array.push(_Json_unwrap(func(entry)));
 		return array;
 	});
 }
