@@ -604,7 +604,7 @@ lazy thunk =
 
 
 {-| Do not do anything with a JSON value, just bring it into Elm as a `Value`.
-This can be useful if you have particularly crazy data that you would like to
+This can be useful if you have particularly complex data that you would like to
 deal with later. Or if you are going to send it out a port and do not care
 about its structure.
 -}
