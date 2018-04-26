@@ -147,7 +147,7 @@ var _Json_runOnString = F2(function(decoder, string)
 	}
 	catch (e)
 	{
-		return __Result_Err(A2(__Json_Failure, 'This is not valid JSON! ' + e.message, string));
+		return __Result_Err(A2(__Json_Failure, 'This is not valid JSON! ' + e.message, _Json_wrap(string)));
 	}
 });
 
