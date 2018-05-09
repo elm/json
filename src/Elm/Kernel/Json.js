@@ -292,7 +292,7 @@ function _Json_runHelp(decoder, value)
 			return __Result_Err(__Json_OneOf(__List_reverse(errors)));
 
 		case __1_FAIL:
-			return __Result_Err(A2(__Json_Failure, decoder.__msg, value));
+			return __Result_Err(A2(__Json_Failure, decoder.__msg, _Json_wrap(value)));
 
 		case __1_SUCCEED:
 			return __Result_Ok(decoder.__msg);
@@ -322,7 +322,7 @@ function _Json_toElmArray(array)
 
 function _Json_expecting(type, value)
 {
-	return __Result_Err(A2(__Json_Failure, 'Expecting ' + type, value));
+	return __Result_Err(A2(__Json_Failure, 'Expecting ' + type, _Json_wrap(value)));
 }
 
 
