@@ -427,4 +427,4 @@ function _Json_addEntry(func)
 	});
 }
 
-var _Json_encodeNull = null;
+var _Json_encodeNull = _Json_wrap(null);
