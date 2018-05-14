@@ -402,7 +402,7 @@ decodeValue =
   Elm.Kernel.Json.run
 
 
-{-| A JSON value.
+{-| Represents a JavaScript value.
 -}
 type alias Value = Json.Encode.Value
 
