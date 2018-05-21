@@ -3,7 +3,7 @@ module Json.Decode exposing
   , nullable, list, array, dict, keyValuePairs
   , field, at, index
   , maybe, oneOf
-  , decodeString, decodeValue, Value, Error, errorToString
+  , decodeString, decodeValue, Value, Error(..), errorToString
   , map, map2, map3, map4, map5, map6, map7, map8
   , lazy, value, null, succeed, fail, andThen
   )
