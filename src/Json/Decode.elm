@@ -153,6 +153,44 @@ array =
 
     decodeString (dict int) "{ \"alice\": 42, \"bob\": 99 }"
       == Dict.fromList [("alice", 42), ("bob", 99)]
+
+If you need the keys (like `"alice"` and `"bob"`) available in the `Dict`
+values as well, I recommend using a (private) intermediate data structure like
+`Info` in this example:
+
+    module User exposing (User, decoder)
+
+    import Dict
+    import Json.Decode exposing (..)
+
+    type alias User =
+      { name : String
+      , height : Float
+      , age : Int
+      }
+
+    decoder : Decoder (Dict.Dict String User)
+    decoder =
+      map (Dict.map infoToUser) (dict infoDecoder)
+
+    type alias Info =
+      { height : Float
+      , age : Int
+      }
+
+    infoDecoder : Decoder Info
+    infoDecoder =
+      map2 Info
+        (field "height" float)
+        (field "age" int)
+
+    infoToUser : String -> Info -> User
+    infoToUser name { height, age } =
+      User name height age
+
+So now JSON like `{ "alice": { height: 1.6, age: 33 }}` are turned into
+dictionary values like `Dict.singleton "alice" (User "alice" 1.6 33)` if
+you need that.
 -}
 dict : Decoder a -> Decoder (Dict String a)
 dict decoder =
