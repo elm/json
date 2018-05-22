@@ -152,7 +152,7 @@ array =
 {-| Decode a JSON object into an Elm `Dict`.
 
     decodeString (dict int) "{ \"alice\": 42, \"bob\": 99 }"
-      == Dict.fromList [("alice", 42), ("bob", 99)]
+      == Ok (Dict.fromList [("alice", 42), ("bob", 99)])
 
 If you need the keys (like `"alice"` and `"bob"`) available in the `Dict`
 values as well, I recommend using a (private) intermediate data structure like
@@ -200,7 +200,7 @@ dict decoder =
 {-| Decode a JSON object into an Elm `List` of pairs.
 
     decodeString (keyValuePairs int) "{ \"alice\": 42, \"bob\": 99 }"
-      == [("alice", 42), ("bob", 99)]
+      == Ok [("alice", 42), ("bob", 99)]
 -}
 keyValuePairs : Decoder a -> Decoder (List (String, a))
 keyValuePairs =
