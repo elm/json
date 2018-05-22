@@ -34,7 +34,7 @@ JSON decoders][guide] to get a feel for how this library works!
 which makes it easier to handle large objects, but produces lower quality type
 errors.
 
-[pipe]: http://package.elm-lang.org/packages/NoRedInk/elm-decode-pipeline/latest
+[pipe]: /packages/NoRedInk/elm-decode-pipeline/latest
 
 @docs map, map2, map3, map4, map5, map6, map7, map8
 
