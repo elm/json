@@ -109,7 +109,7 @@ which is hardcoded into almost all CPUs. This standard allows `Infinity` and
 both as `null`.
 
 [ieee]: https://en.wikipedia.org/wiki/IEEE_754
-[json]: http://www.json.org/
+[json]: https://www.json.org/
 -}
 float : Float -> Value
 float =
