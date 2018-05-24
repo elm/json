@@ -470,7 +470,7 @@ something like this:
       Html.pre [] [ Html.text (Decode.errorToString error) ]
 
 **Note:** It would be cool to do nicer coloring and fancier HTML, but we
-cannot have any HTML dependencies in `elm-lang/core`. It is totally possible
+cannot have any HTML dependencies in `elm/core`. It is totally possible
 to crawl the `Error` structure and create this separately though!
 -}
 errorToString : Error -> String
@@ -634,7 +634,7 @@ By using `list (lazy (\_ -> comment))` we make sure the decoder only expands
 to be as deep as the JSON we are given. You can read more about recursive data
 structures [here][].
 
-[here]: https://github.com/elm-lang/elm-compiler/blob/master/hints/recursive-alias.md
+[here]: https://github.com/elm/compiler/blob/master/hints/recursive-alias.md
 -}
 lazy : (() -> Decoder a) -> Decoder a
 lazy thunk =
