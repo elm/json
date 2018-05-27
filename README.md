@@ -2,7 +2,7 @@
 
 This package helps you convert between Elm values and JSON values.
 
-This package is usually used alongside [`elm-lang/http`](http://package.elm-lang.org/packages/elm-lang/http/latest) to talk to servers or [ports](https://guide.elm-lang.org/interop/javascript.html) to talk to JavaScript.
+This package is usually used alongside [`elm/http`](http://package.elm-lang.org/packages/elm/http/latest) to talk to servers or [ports](https://guide.elm-lang.org/interop/javascript.html) to talk to JavaScript.
 
 
 ## Example
