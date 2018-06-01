@@ -54,6 +54,10 @@ import Elm.Kernel.Json
 
 
 {-| A value that knows how to decode JSON values.
+
+There is a whole section in `guide.elm-lang.org` about decoders, so [check it
+out](https://guide.elm-lang.org/interop/json.html) for a more comprehensive
+introduction!
 -}
 type Decoder a = Decoder
 
