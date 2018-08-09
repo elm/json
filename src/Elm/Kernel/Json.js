@@ -408,7 +408,7 @@ function _Json_listEquality(aDecoders, bDecoders)
 
 var _Json_encode = F2(function(indentLevel, value)
 {
-	return JSON.stringify(_Json_unwrap(value), null, indentLevel);
+	return JSON.stringify(_Json_unwrap(value), null, indentLevel) + '';
 });
 
 function _Json_wrap__DEBUG(value) { return { $: __0_JSON, a: value }; }
