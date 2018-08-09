@@ -3,12 +3,20 @@
 import Array exposing (initialize)
 import Elm.Kernel.List exposing (Cons, Nil, fromArray)
 import Elm.Kernel.Utils exposing (Tuple2)
-import Json.Decode as Json exposing (Field, Index, OneOf, Failure)
+import Json.Decode as Json exposing (Field, Index, OneOf, Failure, errorToString)
 import List exposing (reverse)
 import Maybe exposing (Just, Nothing)
 import Result exposing (Ok, Err, isOk)
 
 */
+
+
+/**__DEBUG/
+function _Json_errorToString(error)
+{
+	return __Json_errorToString(error);
+}
+//*/
 
 
 // CORE DECODERS
