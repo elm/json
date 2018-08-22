@@ -11,7 +11,7 @@ module Json.Decode exposing
 {-| Turn JSON values into Elm values. Definitely check out this [intro to
 JSON decoders][guide] to get a feel for how this library works!
 
-[guide]: https://guide.elm-lang.org/interop/json.html
+[guide]: https://guide.elm-lang.org/effects/json.html
 
 # Primitives
 @docs Decoder, string, bool, int, float
