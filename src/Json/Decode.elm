@@ -474,7 +474,7 @@ something like this:
       Html.pre [] [ Html.text (Decode.errorToString error) ]
 
 **Note:** It would be cool to do nicer coloring and fancier HTML, but we
-cannot have any HTML dependencies in `elm/core`. It is totally possible
+cannot have any HTML dependencies in `elm/json`. It is totally possible
 to crawl the `Error` structure and create this separately though!
 -}
 errorToString : Error -> String
