@@ -37,11 +37,46 @@ function _Json_fail(msg)
 	};
 }
 
-var _Json_decodeInt = { $: __1_INT };
-var _Json_decodeBool = { $: __1_BOOL };
-var _Json_decodeFloat = { $: __1_FLOAT };
-var _Json_decodeValue = { $: __1_VALUE };
-var _Json_decodeString = { $: __1_STRING };
+function _Json_decodePrim(decoder)
+{
+	return { $: __1_PRIM, __decoder: decoder };
+}
+
+var _Json_decodeInt = _Json_decodePrim(function(value) {
+	return (typeof value !== 'number')
+		? _Json_expecting('an INT', value)
+		:
+	(-2147483647 < value && value < 2147483647 && (value | 0) === value)
+		? __Result_Ok(value)
+		:
+	(isFinite(value) && !(value % 1))
+		? __Result_Ok(value)
+		: _Json_expecting('an INT', value);
+});
+
+var _Json_decodeBool = _Json_decodePrim(function(value) {
+	return (typeof value === 'boolean')
+		? __Result_Ok(value)
+		: _Json_expecting('a BOOL', value);
+});
+
+var _Json_decodeFloat = _Json_decodePrim(function(value) {
+	return (typeof value === 'number')
+		? __Result_Ok(value)
+		: _Json_expecting('a FLOAT', value);
+});
+
+var _Json_decodeValue = _Json_decodePrim(function(value) {
+	return __Result_Ok(_Json_wrap(value));
+});
+
+var _Json_decodeString = _Json_decodePrim(function(value) {
+	return (typeof value === 'string')
+		? __Result_Ok(value)
+		: (value instanceof String)
+			? __Result_Ok(value + '')
+			: _Json_expecting('a STRING', value);
+});
 
 function _Json_decodeList(decoder) { return { $: __1_LIST, __decoder: decoder }; }
 function _Json_decodeArray(decoder) { return { $: __1_ARRAY, __decoder: decoder }; }
@@ -168,45 +203,13 @@ function _Json_runHelp(decoder, value)
 {
 	switch (decoder.$)
 	{
-		case __1_BOOL:
-			return (typeof value === 'boolean')
-				? __Result_Ok(value)
-				: _Json_expecting('a BOOL', value);
-
-		case __1_INT:
-			if (typeof value !== 'number') {
-				return _Json_expecting('an INT', value);
-			}
-
-			if (-2147483647 < value && value < 2147483647 && (value | 0) === value) {
-				return __Result_Ok(value);
-			}
-
-			if (isFinite(value) && !(value % 1)) {
-				return __Result_Ok(value);
-			}
-
-			return _Json_expecting('an INT', value);
-
-		case __1_FLOAT:
-			return (typeof value === 'number')
-				? __Result_Ok(value)
-				: _Json_expecting('a FLOAT', value);
-
-		case __1_STRING:
-			return (typeof value === 'string')
-				? __Result_Ok(value)
-				: (value instanceof String)
-					? __Result_Ok(value + '')
-					: _Json_expecting('a STRING', value);
+		case __1_PRIM:
+			return decoder.__decoder(value);
 
 		case __1_NULL:
 			return (value === null)
 				? __Result_Ok(decoder.__value)
 				: _Json_expecting('null', value);
-
-		case __1_VALUE:
-			return __Result_Ok(_Json_wrap(value));
 
 		case __1_LIST:
 			if (!Array.isArray(value))
@@ -354,12 +357,8 @@ function _Json_equality(x, y)
 		case __1_FAIL:
 			return x.__msg === y.__msg;
 
-		case __1_BOOL:
-		case __1_INT:
-		case __1_FLOAT:
-		case __1_STRING:
-		case __1_VALUE:
-			return true;
+		case __1_PRIM:
+			return x.__decoder === y.__decoder;
 
 		case __1_NULL:
 			return x.__value === y.__value;
