@@ -212,14 +212,14 @@ function _Json_runHelp(decoder, value)
 				: _Json_expecting('null', value);
 
 		case __1_LIST:
-			if (!Array.isArray(value))
+			if (!_Json_isArray(value))
 			{
 				return _Json_expecting('a LIST', value);
 			}
 			return _Json_runArrayDecoder(decoder.__decoder, value, __List_fromArray);
 
 		case __1_ARRAY:
-			if (!Array.isArray(value))
+			if (!_Json_isArray(value))
 			{
 				return _Json_expecting('an ARRAY', value);
 			}
@@ -236,7 +236,7 @@ function _Json_runHelp(decoder, value)
 
 		case __1_INDEX:
 			var index = decoder.__index;
-			if (!Array.isArray(value))
+			if (!_Json_isArray(value))
 			{
 				return _Json_expecting('an ARRAY', value);
 			}
@@ -248,7 +248,7 @@ function _Json_runHelp(decoder, value)
 			return (__Result_isOk(result)) ? result : __Result_Err(A2(__Json_Index, index, result.a));
 
 		case __1_KEY_VALUE:
-			if (typeof value !== 'object' || value === null || Array.isArray(value))
+			if (typeof value !== 'object' || value === null || !_Json_isArray(value))
 			{
 				return _Json_expecting('an OBJECT', value);
 			}
@@ -324,6 +324,11 @@ function _Json_runArrayDecoder(decoder, value, toElmValue)
 		array[i] = result.a;
 	}
 	return __Result_Ok(toElmValue(array));
+}
+
+function _Json_isArray(value)
+{
+	return Array.isArray(value) || value instanceof FileList;
 }
 
 function _Json_toElmArray(array)
