@@ -1,6 +1,6 @@
 module Json.Decode exposing
   ( Decoder, string, bool, int, float
-  , nullable, list, array, dict, keyValuePairs
+  , nullable, list, array, dict, keyValuePairs, oneOrMore
   , field, at, index
   , maybe, oneOf
   , decodeString, decodeValue, Value, Error(..), errorToString
@@ -17,7 +17,7 @@ JSON decoders][guide] to get a feel for how this library works!
 @docs Decoder, string, bool, int, float
 
 # Data Structures
-@docs nullable, list, array, dict, keyValuePairs
+@docs nullable, list, array, dict, keyValuePairs, oneOrMore
 
 # Object Primitives
 @docs field, at, index
@@ -209,6 +209,38 @@ dict decoder =
 keyValuePairs : Decoder a -> Decoder (List (String, a))
 keyValuePairs =
   Elm.Kernel.Json.decodeKeyValuePairs
+
+
+{-| Decode a JSON array that has one or more elements. This comes up if you
+want to enable drag-and-drop of files into your application. You would pair
+this function with [`elm/file`]() to write a `dropDecoder` like this:
+
+    import File exposing (File)
+    import Json.Decoder as D
+
+    type Msg
+      = GotFiles File (List Files)
+
+    inputDecoder : D.Decoder Msg
+    inputDecoder =
+      D.at ["dataTransfer","files"] (D.oneOrMore GotFiles File.decoder)
+
+This captures the fact that you can never drag-and-drop zero files.
+-}
+oneOrMore : (a -> List a -> value) -> Decoder a -> Decoder value
+oneOrMore toValue decoder =
+  list decoder
+    |> andThen (oneOrMoreHelp toValue)
+
+
+oneOrMoreHelp : (a -> List a -> value) -> List a -> Decoder value
+oneOrMoreHelp toValue xs =
+  case xs of
+    [] ->
+      fail "a ARRAY with at least ONE element"
+
+    y :: ys ->
+      succeed (toValue y ys)
 
 
 
