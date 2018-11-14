@@ -248,7 +248,7 @@ function _Json_runHelp(decoder, value)
 			return (__Result_isOk(result)) ? result : __Result_Err(A2(__Json_Index, index, result.a));
 
 		case __1_KEY_VALUE:
-			if (typeof value !== 'object' || value === null || !_Json_isArray(value))
+			if (typeof value !== 'object' || value === null || _Json_isArray(value))
 			{
 				return _Json_expecting('an OBJECT', value);
 			}
