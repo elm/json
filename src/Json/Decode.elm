@@ -571,7 +571,7 @@ errorToStringHelp error context =
         introduction =
           case context of
             [] ->
-              "Problem with the given value:\n\n"
+              "Problem with the given value:\n\n    "
             _ ->
               "Problem with the value at json" ++ String.join "" (List.reverse context) ++ ":\n\n    "
       in
