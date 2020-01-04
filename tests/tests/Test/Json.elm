@@ -49,8 +49,11 @@ intTests =
             , test "Decoder expects object finds array, was crashing runtime." <|
                 \() ->
                     Expect.equal
-                        (Err "Expecting an object but instead got: []")
-                        (Json.decodeString (Json.dict Json.float) "[]")
+                        (Err "Problem with the given value:\n\n[]\n\nExpecting an OBJECT")
+                        (Result.mapError
+                            Json.errorToString
+                            (Json.decodeString (Json.dict Json.float) "[]")
+                        )
             ]
 
 
@@ -71,7 +74,11 @@ customTests =
                 Ok _ ->
                     Expect.fail "expected `customDecoder` to produce a value of type Err, but got Ok"
 
-                Err message ->
+                Err error ->
+                    let
+                        message =
+                            Json.errorToString error
+                    in
                     if String.contains customErrorMessage message then
                         Expect.pass
                     else
