@@ -393,6 +393,31 @@ objects with many fields:
 
 It tries each individual decoder and puts the result together with the `Point`
 constructor.
+
+In this example, we use the `Point` type alias because a type alias
+generates a record constructor function for the type. `map2` takes as its
+first argument a function that constructs the type in question.
+
+Thus if you're working with an opaque type, which unlike a type alias does
+not expose a constructor function, you will have to write your own function
+that constructs the type, like so:
+
+type Point =
+  PointConstructor { x: Float, y: Float }
+
+initPoint : Point
+initPoint =
+  PointConstructor {
+    x : 0
+    y : 0
+  }
+
+point : Decoder Point
+point =
+  map2 initPoint
+    (field "x" float")
+    (field "y" float")
+
 -}
 map2 : (a -> b -> value) -> Decoder a -> Decoder b -> Decoder value
 map2 =
