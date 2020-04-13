@@ -328,7 +328,10 @@ function _Json_runArrayDecoder(decoder, value, toElmValue)
 
 function _Json_isArray(value)
 {
-	return Array.isArray(value) || (typeof FileList !== 'undefined' && value instanceof FileList);
+	return Array.isArray(value)
+		|| (typeof FileList !== 'undefined' && value instanceof FileList)
+		|| (typeof HTMLCollection !== 'undefined' && value instanceof HTMLCollection)
+		|| (typeof NodeList !== 'undefined' && value instanceof NodeList);
 }
 
 function _Json_toElmArray(array)
