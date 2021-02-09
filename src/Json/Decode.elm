@@ -271,7 +271,7 @@ field =
     json = """{ "person": { "name": "tom", "age": 42 } }"""
 
     decodeString (at ["person", "name"] string) json  == Ok "tom"
-    decodeString (at ["person", "age" ] int   ) json  == Ok "42
+    decodeString (at ["person", "age" ] int   ) json  == Ok 42
 
 This is really just a shorthand for saying things like:
 
