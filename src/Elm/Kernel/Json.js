@@ -46,7 +46,7 @@ var _Json_decodeInt = _Json_decodePrim(function(value) {
 	return (typeof value !== 'number')
 		? _Json_expecting('an INT', value)
 		:
-	(-2147483647 < value && value < 2147483647 && (value | 0) === value)
+	(-2147483648 <= value && value <= 2147483647 && (value | 0) === value)
 		? __Result_Ok(value)
 		:
 	(isFinite(value) && !(value % 1))
