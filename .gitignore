@@ -1,1 +1,4 @@
-elm-stuff
+elm-stuff/
+/artifacts.dat
+/docs.json
+/tests/.elm
