@@ -1,5 +1,5 @@
 module Json.Decode exposing
-  ( Decoder, string, bool, int, float
+  ( Decoder, string, stringAs, bool, int, float
   , nullable, list, array, dict, keyValuePairs, oneOrMore
   , field, at, index
   , maybe, oneOf
@@ -23,7 +23,7 @@ JSON decoders][guide] to get a feel for how this library works!
 @docs field, at, index
 
 # Inconsistent Structure
-@docs maybe, oneOf
+@docs maybe, oneOf, stringAs
 
 # Run Decoders
 @docs decodeString, decodeValue, Value, Error, errorToString
@@ -73,6 +73,53 @@ type Decoder a = Decoder
 string : Decoder String
 string =
   Elm.Kernel.Json.decodeString
+
+
+{-| Decode the contents a JSON string with another decoder. This can be useful
+if the JSON contains values that are really numbers, but exists as strings. For
+example, say you want to decode the list stringified numbers.
+
+    sneakyFloat : Decoder Float
+    sneakyFloat =
+      stringAs float
+
+    -- decodeString (list sneakyFloat) "[\"1.5\", \"42.0\"]" == Ok [1.5, 42.0]
+
+Unfortunately, there could be times like this when you have to work with JSON
+that uses strings to represent floats instead of just regular JSON numbers. If
+you will need to do actual arithmetic on them, like multiplying them together,
+then this functions allows you to parse them correctly with ease.
+
+It can be used together with `oneOf` to handle cases when a number is sometimes
+represented by a JSON string and sometimes an actual JSON number.
+
+NOTE: When the these values are integers as strings, then there is a valid
+reason NOT to decode them into integers. JavaScript uses floating point types
+to represent integers as well, so there is no guarantee that it will be exact.
+For example for unique IDs, it is better to use strings in JavaScript.
+-}
+stringAs : Decoder value -> Decoder value
+stringAs decoder =
+  string
+    |> andThen
+      (\str ->
+        case decodeString decoder str of
+          Err err ->
+            failWithError err
+
+          Ok val ->
+            succeed val
+      )
+
+
+{-| TODO: write a proper version of this function.
+Depends on [#25][issue-25]
+
+[issue-25]: https://github.com/elm/json/issues/25
+-}
+failWithError : Error -> Decoder a
+failWithError =
+  fail << errorToString
 
 
 {-| Decode a JSON boolean into an Elm `Bool`.

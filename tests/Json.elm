@@ -12,6 +12,7 @@ tests : Test
 tests =
     describe "Json decode"
         [ intTests
+        , stringAsTests
         , customTests
         ]
 
@@ -53,6 +54,30 @@ intTests =
                         (Json.decodeString (Json.dict Json.float) "[]")
             ]
 
+
+stringAsTests : Test
+stringAsTests =
+    let
+        testStringAs decoder val str =
+            case Json.decodeString (Json.stringAs decoder) str of
+                Ok _ ->
+                    Expect.equal val True
+
+                Err _ ->
+                    Expect.equal val False
+        int = Json.int
+        float = Json.float
+    in
+        describe "Jsong decode stringAs"
+            [ test "int string -> int" <| testStringAs int True "\"3\""
+            , test "float string -> int" <| testStringAs int False "\"3.0\""
+            , test "int -> int" <| testStringAs int False "3"
+            , test "float -> int" <| testStringAs int False "3.0"
+            , test "int string -> float" <| testStringAs float False "\"3\""
+            , test "float string -> float" <| testStringAs float True "\"3.0\""
+            , test "int -> float" <| testStringAs float False "3"
+            , test "float -> float" <| testStringAs float False "3.0"
+            ]
 
 customTests : Test
 customTests =
